@@ -1,6 +1,7 @@
 from alpaca.data.live import StockDataStream
 
 from src.config import ALPACA_API_KEY, ALPACA_SECRET_KEY
+from src.universe import NASDAQ_100_SYMBOLS 
 
 
 async def handle_trade(data):
@@ -28,10 +29,9 @@ stream = StockDataStream(
     ALPACA_SECRET_KEY,
 )
 
-symbols = ["AAPL", "MSFT", "NVDA", "AMZN", "META"]
 
-stream.subscribe_trades(handle_trade, *symbols)
-stream.subscribe_quotes(handle_quote, *symbols)  
+stream.subscribe_trades(handle_trade, *NASDAQ_100_SYMBOLS)
+stream.subscribe_quotes(handle_quote, *NASDAQ_100_SYMBOLS)  
 
 print("Starting Alpaca WebSocket...")
 stream.run()
