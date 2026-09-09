@@ -3,6 +3,9 @@ from alpaca.data.live import StockDataStream
 from src.config import ALPACA_API_KEY, ALPACA_SECRET_KEY
 from src.universe import NASDAQ_100_SYMBOLS 
 from data_engineering.processing.market_processor import MarketDataProcessor
+from data_engineering.processing.market_features import (
+    calculate_price_change_over_window
+)
 
 
 processor = MarketDataProcessor()
@@ -11,6 +14,12 @@ async def handle_trade(data):
     processor.process_trade(data)
 
     trades = processor.history.get_trades(data.symbol)
+
+    price_change_5m = calculate_price_change_over_window(
+        trades,
+        window_minutes=5
+    )
+
     print(
         f"TRADE | "
         f"Symbol: {data.symbol} | "
@@ -18,11 +27,18 @@ async def handle_trade(data):
         f"Size: {data.size} | "
         f"Time: {data.timestamp}"
     )
+
     print(
         f"{data.symbol} | "
         f"Current Price: {data.price} | "
         f"Recent Trades Stored: {len(trades)}"
-    ) 
+    )
+
+    if price_change_5m is not None:
+        print(
+            f"{data.symbol} | "
+            f"Price Change 5m: {price_change_5m:.2f}%"
+        )
 
 
 async def handle_quote(data):
