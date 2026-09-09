@@ -34,3 +34,18 @@ def calculate_price_change_over_window(trades, window_minutes=5):
         previous_trade["price"],
         current_price
     )
+
+def calculate_volume_over_window(trades, window_minutes=5):
+    if not trades:
+        return 0.0
+
+    current_time = trades[-1]["timestamp"]
+    cutoff_time = current_time - timedelta(minutes=window_minutes)
+
+    total_volume = 0.0
+
+    for trade in trades:
+        if trade["timestamp"] >= cutoff_time:
+            total_volume += trade["size"]
+
+    return total_volume
