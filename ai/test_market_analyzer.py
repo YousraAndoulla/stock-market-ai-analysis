@@ -16,4 +16,18 @@ Bid-ask spread: $0.03
 analysis = analyze_market(context)
 
 print("\nAI MARKET ANALYSIS:\n")
-print(analysis)
+
+print("Market state:")
+print(analysis.market_state)
+
+print("\nPrice observation:")
+print(analysis.price_observation)
+
+print("\nVolume observation:")
+print(analysis.volume_observation)
+
+print("\nLiquidity observation:")
+print(analysis.liquidity_observation)
+
+print("\nRisk notes:")
+print(analysis.risk_notes)
